@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 
 class Program
@@ -6,11 +6,13 @@ class Program
     static void Main(string[] args)
     {
         // Velkomstbesked og forklaring af spillet
-        Console.WriteLine("====================================");
+        Console.WriteLine("___________________________________");
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("   Velkommen til Dungeon Escape!");
-        Console.WriteLine("====================================");
+        Console.ResetColor();
+        Console.WriteLine("===================================");
         Console.WriteLine("Find nøglen (N) og gå til udgangen (U) for at vinde.");
-        Console.WriteLine("Men pas på! Hvis du laver for mange forkerte træk, falder du i en fælde!");
+        Console.WriteLine("Men pas på! Hvis du laver for mange forkerte træk falder du i en fælde!");
         Console.WriteLine("Tryk på en tast for at starte spillet...");
         Console.ReadKey();
 
@@ -37,7 +39,9 @@ class Program
             // Tegn labyrinten
             Console.Clear();
             Console.WriteLine("====================================");
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("   Dungeon Escape - Spil");
+            Console.ResetColor();
             Console.WriteLine("====================================");
             for (int i = 0; i < labyrint.GetLength(0); i++) {
                 for (int j = 0; j < labyrint.GetLength(1); j++) {
@@ -50,9 +54,11 @@ class Program
             }
             // Spil instruktioner og status beskeder 
             Console.WriteLine("\nFind nøglen (N) og gå til udgangen (U) for at vinde.");
-            Console.WriteLine("Men pas på! Hvis du laver for mange forkerte træk, falder du i en fælde!");
+            Console.WriteLine("Men pas på! Hvis du laver for mange forkerte træk falder du i en fælde!");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Forkerte træk: {wrongMoves}/{maxWrongMoves}");
-            Console.WriteLine("\nBrug W (op), A (venstre), S (ned), D (højre) til at bevæge dig.");
+            Console.ResetColor();
+            Console.WriteLine("\nBrug W (op) A (venstre) S (ned) D (højre) til at bevæge dig.");
             Console.Write("Indtast dit valg: ");
             // Læs spillerens input og flyt spilleren i labyrinten
             char move = Char.ToLower(Console.ReadKey().KeyChar);
@@ -76,7 +82,9 @@ class Program
             // Kontroller gyldighed af træk
             if (newX >= 0 && newX < labyrint.GetLength(0) && newY >= 0 && newY < labyrint.GetLength(1)) {
                 if (labyrint[newX, newY] == '#') {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Du kan ikke gå igennem vægge!");
+                    Console.ResetColor();
                     wrongMoves++;
                 }
                 else if (labyrint[newX, newY] == 'N') {
@@ -84,14 +92,19 @@ class Program
                     labyrint[newX, newY] = ' ';
                     spillerX = newX;
                     spillerY = newY;
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Du har samlet nøglen!");
+                    Console.ResetColor();
                 }
+                // Tjek om spilleren har nået udgangen og vundet spillet
                 else if (labyrint[newX, newY] == 'U') {
                     if (hasKey) {
                         Console.WriteLine("Tillykke! Du har vundet spillet!");
                         break;
                     }
+                    // Hvis spilleren ikke har nøglen, kan han/hun ikke gå ud
                     else {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Du skal finde nøglen først!");
                         wrongMoves++;
                     }
